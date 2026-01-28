@@ -1,7 +1,160 @@
-let currentStep = 1;
+// Utility to show/hide Hello Kitty waving based on step
+function updateKittyWaveVisibility(stepId) {
+    const kitty = document.querySelector('.hello-kitty-wave-bg');
+    if (!kitty) return;
+    // Show for steps before and including step6, hide for step7 and beyond
+    if (["step-typing","step-music","step0","step1","step2","step3","step4","step5","step6"].includes(stepId)) {
+        kitty.style.display = '';
+    } else {
+        kitty.style.display = 'none';
+    }
+}
+// Step navigation logic
+let currentStep = 0;
+
+function showStep(stepId) {
+    document.querySelectorAll('.step').forEach(s => {
+        s.classList.remove('active');
+        s.classList.add('hidden');
+    });
+    const step = document.getElementById(stepId);
+    if (step) {
+        step.classList.remove('hidden');
+        step.classList.add('active');
+    }
+    updateKittyWaveVisibility(stepId);
+}
+
+// Typewriter intro logic
+const typewriterMessages = [
+    "hi love",
+    "i hope u're doing well rn",
+    "ik na u're having tampo sakin before but this is also one of my way to show u what i can do for u and this is one of my bawi",
+    "hehe",
+    "should we proceed?"
+];
+
+function typeWriterLines(lines, container, cb) {
+    let idx = 0;
+    function typeLine() {
+        if (idx >= lines.length) { cb && cb(); return; }
+        const line = lines[idx];
+        container.innerHTML = '';
+        const lineEl = document.createElement('div');
+        lineEl.className = 'typewriter-line';
+        container.appendChild(lineEl);
+        let charIdx = 0;
+        function typeChar() {
+            if (charIdx <= line.length) {
+                let html = '';
+                for (let i = 0; i < charIdx - 1; i++) {
+                    const letter = line[i];
+                    if (letter === ' ') {
+                        html += ' ';
+                    } else {
+                        html += `<span class=\"letter\">${letter}</span>`;
+                    }
+                }
+                if (charIdx > 0 && charIdx <= line.length) {
+                    const letter = line[charIdx - 1];
+                    if (letter === ' ') {
+                        html += ' ';
+                    } else {
+                        html += `<span class=\"letter\" style=\"animation-delay:0s\">${letter}</span>`;
+                    }
+                }
+                lineEl.innerHTML = html + '<span class="typewriter-cursor">|</span>';
+                charIdx++;
+                setTimeout(typeChar, 80 + Math.random()*60);
+            } else {
+                let html = '';
+                for (let i = 0; i < line.length; i++) {
+                    const letter = line[i];
+                    if (letter === ' ') {
+                        html += ' ';
+                    } else {
+                        html += `<span class=\"letter\">${letter}</span>`;
+                    }
+                }
+                lineEl.innerHTML = html;
+                idx++;
+                setTimeout(typeLine, 1100);
+            }
+        }
+        typeChar();
+    }
+    typeLine();
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+    updateKittyWaveVisibility('step-typing');
+    // Only run typewriter if step-typing is present and active
+    const typingStep = document.getElementById('step-typing');
+    if (typingStep && typingStep.classList.contains('active')) {
+        const msgBox = document.getElementById('typewriter-messages');
+        const continueBtn = document.getElementById('typing-continue');
+        typeWriterLines(typewriterMessages, msgBox, function() {
+            continueBtn.classList.remove('hidden');
+        });
+        continueBtn.addEventListener('click', function() {
+            showStep('step-music');
+            currentStep = 'music';
+        });
+    }
+
+    // Music selection logic
+        const musicStep = document.getElementById('step-music');
+        if (musicStep) {
+            const musicBtns = musicStep.querySelectorAll('.music-btn');
+            musicBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Set and play selected music
+                    const src = btn.getAttribute('data-src');
+                    let audio = document.getElementById('bg-music');
+                    if (!audio) {
+                        audio = document.createElement('audio');
+                        audio.id = 'bg-music';
+                        audio.loop = true;
+                        document.body.appendChild(audio);
+                    }
+                    audio.src = src;
+                    audio.volume = 0.7;
+                    audio.play();
+                    // Go to typewriter message step
+                    showStep('step-typing');
+                    currentStep = 'typing';
+                    // Start typewriter effect after music choice
+                    const msgBox = document.getElementById('typewriter-messages');
+                    const continueBtn = document.getElementById('typing-continue');
+                    msgBox.innerHTML = '';
+                    continueBtn.classList.add('hidden');
+                    typeWriterLines(typewriterMessages, msgBox, function() {
+                        continueBtn.classList.remove('hidden');
+                    });
+                    continueBtn.onclick = function() {
+                        showStep('step0');
+                        currentStep = 0;
+                    };
+                });
+            });
+        }
+});
+
+// Restore: Continue goes to heart step (step1)
+document.getElementById('skip-video').addEventListener('click', function() {
+    showStep('step1');
+    currentStep = 1;
+    // Music should keep playing until the flower part (step6)
+});
 const PASSWORD = "CLUBHOUSE"; 
 const TRIVIA = { food: "ADOBO", color: "RED", dog: "SAYSAY" };
-const REASONS = ["You're my home 🏠", "Your laugh is music 🎶", "You make me brave 💪", "I love our adventures ✈️", "You're my everything ❤️"];
+const REASONS = [
+    "You are my home.",
+    "You give me peace.",
+    "You love me so right.",
+    "You always take care of me.",
+    "Loving you feels so right."
+];
 
 // PIXEL SOUND EFFECTS
 function playPixelSound(type = 'beep') {
@@ -148,23 +301,24 @@ createFireworks();
 createFloatingPixels();
 
 function nextStep() {
-    const currentSection = document.getElementById('step' + currentStep);
-    currentSection.classList.remove('active');
-    currentSection.style.animation = 'none';
-    setTimeout(() => {
-        currentSection.style.animation = '';
-    }, 10);
-    
+    // Hide all steps
+    document.querySelectorAll('.step').forEach(s => {
+        s.classList.remove('active');
+        s.classList.add('hidden');
+    });
     currentStep++;
-    setTimeout(() => {
-        const nextSection = document.getElementById('step' + currentStep);
-        nextSection.classList.add('active');
-        if(currentStep === 5) updateSlider();
-        if(currentStep === 7) typeWriter();
-        
-        // Add celebration particles
-        confetti({ particleCount: 8, origin: { y: 0.3 } });
-    }, 600);
+    const nextSection = document.getElementById('step' + currentStep);
+    nextSection.classList.remove('hidden');
+    nextSection.classList.add('active');
+    if(currentStep === 5) updateSlider();
+    // Stop music after the flower part, when Done is pressed (step7)
+    if(currentStep === 7) {
+        let audio = document.getElementById('bg-music');
+        if(audio) { audio.pause(); audio.currentTime = 0; }
+        typeWriter();
+    }
+    // Add celebration particles
+    confetti({ particleCount: 8, origin: { y: 0.3 } });
 }
 
 // 1. START & PIXEL LOADER
@@ -175,11 +329,16 @@ document.getElementById('heart-trigger').onclick = function() {
     document.querySelector('.tap-hint').classList.add('hidden');
     document.getElementById('loader-ui').classList.remove('hidden');
     let w = 0;
+    document.getElementById('bar-fill').style.width = '0%';
     let t = setInterval(() => {
-        w += 1; 
+        w += 1;
         document.getElementById('bar-fill').style.width = w + '%';
         if(w % 25 === 0) playPixelSound('beep');
-        if(w >= 100) { clearInterval(t); setTimeout(nextStep, 500); }
+        if(w >= 100) {
+            clearInterval(t);
+            document.getElementById('loader-ui').classList.add('hidden');
+            setTimeout(nextStep, 500);
+        }
     }, 25);
 };
 
@@ -188,7 +347,8 @@ function handleEnvelope(el) {
     if(el.classList.contains('open')) return;
     playPixelSound('beep');
     el.classList.add('open');
-    const openCount = document.querySelectorAll('.open').length;
+    // Reveal the photo (handled by CSS)
+    const openCount = document.querySelectorAll('.env-wrapper.open').length;
     if(openCount >= 4) {
         playPixelSound('success');
         setTimeout(() => document.getElementById('nav-to-pw').classList.remove('hidden'), 300);
@@ -306,6 +466,20 @@ function spawnFlower(type) {
 // 7. FINALE
 function accept() {
     playPixelSound('success');
+    // Stop any previous music
+    let audio = document.getElementById('bg-music');
+    if(audio) { audio.pause(); audio.currentTime = 0; }
+    // Play Marry You music
+    let marryAudio = document.getElementById('marry-music');
+    if (!marryAudio) {
+        marryAudio = document.createElement('audio');
+        marryAudio.id = 'marry-music';
+        marryAudio.src = 'music/marry_you.mp3';
+        marryAudio.volume = 0.8;
+        document.body.appendChild(marryAudio);
+    }
+    marryAudio.currentTime = 0;
+    marryAudio.play();
     document.getElementById('proposal-card').classList.add('hidden');
     document.getElementById('celebration-ui').classList.remove('hidden');
     const end = Date.now() + 8000;
