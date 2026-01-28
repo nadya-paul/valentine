@@ -11,59 +11,73 @@
         align-items: center;
         gap: 4vw;
         width: 100vw;
-        margin: 0 auto;
-    }
-    .env-wrapper {
-        width: 92vw !important;
-        max-width: 98vw !important;
-        margin: 0 auto 3vw auto !important;
-        min-width: 0 !important;
-        min-height: 0 !important;
-    }
-    .env-main {
-        width: 100% !important;
-        height: auto !important;
-        min-height: 50vw;
-        max-width: 100vw;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    .env-photo {
-        width: 90vw !important;
-        height: 48vw !important;
-        min-height: 120px;
-        min-width: 120px;
-        max-width: 95vw;
-        max-height: 60vw;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        left: 0;
-        top: 0;
-        transform: none;
-        margin: 0 auto;
-        padding: 0;
-    }
-    .env-photo img {
-        max-width: 100%;
-        max-height: 100%;
-        width: auto;
-        height: auto;
-        object-fit: contain;
-        display: block;
-        margin: auto;
-        border-radius: 6px;
-        box-shadow: none;
-        border: none;
-    }
-    .pixel-card, .expanded, .bouquet-card {
-        width: 97vw !important;
-        min-width: 0 !important;
-        box-sizing: border-box;
-        padding: 2vw !important;
-        margin: 0 auto 3vw auto !important;
-    }
+            .envelope-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 3vw;
+                width: 100vw;
+                margin: 0 auto;
+                overflow-x: hidden;
+                overflow-y: auto;
+                max-height: 70vh;
+                box-sizing: border-box;
+            }
+            .env-wrapper {
+                width: 44vw !important;
+                max-width: 48vw !important;
+                margin: 0 auto !important;
+                min-width: 0 !important;
+                min-height: 0 !important;
+            }
+            .env-main {
+                width: 100% !important;
+                height: 38vw !important;
+                min-height: 120px;
+                max-width: 100vw;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            .env-photo {
+                position: static !important;
+                width: 100% !important;
+                height: 100% !important;
+                min-width: 0 !important;
+                min-height: 0 !important;
+                max-width: 100vw !important;
+                max-height: 100% !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                margin: 0 auto !important;
+                padding: 0 !important;
+                left: 0 !important;
+                top: 0 !important;
+                transform: none !important;
+                box-sizing: border-box !important;
+            }
+            .env-photo img {
+                max-width: 100% !important;
+                max-height: 100% !important;
+                width: auto !important;
+                height: auto !important;
+                object-fit: contain !important;
+                display: block !important;
+                margin: auto !important;
+                border-radius: 6px !important;
+                box-shadow: none !important;
+                border: none !important;
+            }
+            #nav-to-pw {
+                position: fixed;
+                left: 50%;
+                bottom: 2vh;
+                transform: translateX(-50%);
+                z-index: 999;
+                width: 90vw !important;
+                max-width: 98vw;
+                box-sizing: border-box;
+                display: block;
+            }
     .glow-btn, button, input[type="text"] {
         font-size: 1.1em !important;
             .env-photo {
