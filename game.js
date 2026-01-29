@@ -24,7 +24,7 @@ function spawnHeart() {
             <path d="M48 78s-36-24.6-36-46.8C12 18.6 28.8 6 48 24.6 67.2 6 84 18.6 84 31.2c0 22.2-36 46.8-36 46.8z" fill="url(#heartGrad)" stroke="#b71c4f" stroke-width="4"/>
         </svg>`;
 
-    // Start above the game area, fall down
+
     const rect = gameArea.getBoundingClientRect();
     const w = Math.max(44, Math.min(72, Math.floor(rect.width * 0.12)));
     heart.style.width = `${w}px`;
@@ -36,11 +36,11 @@ function spawnHeart() {
     heart.style.transition = 'top 1.2s cubic-bezier(.4,1.6,.6,1), transform 0.2s';
     heart.style.zIndex = 2;
 
-    // Add sparkle trail
+
     for (let i = 0; i < 3; i++) {
         const sparkle = document.createElement('div');
         sparkle.className = 'heart-sparkle';
-        sparkle.style.left = (x + rand(-8, w+8)) + 'px';
+        sparkle.style.left = (x + rand(-8, w + 8)) + 'px';
         sparkle.style.top = rand(-30, 10) + 'px';
         sparkle.style.animationDuration = (0.7 + Math.random() * 0.7) + 's';
         gameArea.appendChild(sparkle);
@@ -49,7 +49,7 @@ function spawnHeart() {
 
     setTimeout(() => {
         heart.style.top = rand(40, rect.height - Math.floor(w * 0.8) - 8) + 'px';
-        heart.style.transform = `rotate(${rand(-18,18)}deg)`;
+        heart.style.transform = `rotate(${rand(-18, 18)}deg)`;
     }, 30);
 
     heart.addEventListener('click', (e) => {
@@ -58,23 +58,23 @@ function spawnHeart() {
         scoreEl.textContent = score;
         heart.style.transform = 'scale(1.4) rotate(-10deg)';
         heart.style.opacity = '0';
-        // Burst sparkles
+
         for (let i = 0; i < 8; i++) {
             const sparkle = document.createElement('div');
             sparkle.className = 'heart-sparkle';
-            sparkle.style.left = (x + rand(-8, w+8)) + 'px';
+            sparkle.style.left = (x + rand(-8, w + 8)) + 'px';
             sparkle.style.top = (parseInt(heart.style.top) + rand(-8, 8)) + 'px';
             sparkle.style.animationDuration = (0.5 + Math.random() * 0.5) + 's';
             gameArea.appendChild(sparkle);
             setTimeout(() => sparkle.remove(), 900);
         }
-        try { confetti({ particleCount: 18, spread: 60, origin: { x: (x+20)/rect.width, y: 0.3 } }); } catch (err) {}
+        try { confetti({ particleCount: 18, spread: 60, origin: { x: (x + 20) / rect.width, y: 0.3 } }); } catch (err) { }
         setTimeout(() => heart.remove(), 300);
     });
 
     gameArea.appendChild(heart);
 
-    // Missed heart animation
+
     setTimeout(() => {
         if (heart.parentNode) {
             heart.classList.add('missed-heart');
@@ -82,7 +82,7 @@ function spawnHeart() {
         }
     }, 2000 + rand(0, 1000));
 }
-// Animated background hearts
+
 function animateBgHearts() {
     for (let i = 0; i < 10; i++) {
         const bg = document.createElement('div');
@@ -94,7 +94,7 @@ function animateBgHearts() {
         bg.style.opacity = Math.random() * 0.3 + 0.2;
         bg.style.pointerEvents = 'none';
         bg.style.zIndex = 0;
-        bg.style.animation = `floatBgHeart ${rand(7,14)}s linear infinite`;
+        bg.style.animation = `floatBgHeart ${rand(7, 14)}s linear infinite`;
         gameArea.appendChild(bg);
     }
 }
@@ -115,27 +115,27 @@ function startGame() {
 }
 
 function endGame() {
-        clearInterval(spawnInterval); spawnInterval = null;
-        clearInterval(timerInterval); timerInterval = null;
-        startBtn.textContent = 'Start'; startBtn.disabled = false;
-        // show results overlay
-        const overlay = document.createElement('div'); overlay.className = 'game-overlay';
-        const modal = document.createElement('div'); modal.className = 'game-modal';
-        let win = score >= 10; // Win if score >= 10
-        modal.innerHTML = win
-                ? `<h3 class="pixel-text">You Win!</h3><p>Your score: <strong>${score}</strong></p><div id="teddy-bear"></div><div style="margin-top:10px;"><button id='retry' class='glow-btn'>Play Again</button> <a class='glow-btn' href='index.html'>Back</a></div>`
-                : `<h3 class="pixel-text">Time!</h3><p>Your score: <strong>${score}</strong></p><div style="margin-top:10px;"><button id='retry' class='glow-btn'>Play Again</button> <a class='glow-btn' href='index.html'>Back</a></div>`;
-        overlay.appendChild(modal);
-        document.body.appendChild(overlay);
-        document.getElementById('retry').addEventListener('click', () => { overlay.remove(); startGame(); });
-        // Show teddy bear if win
-        if (win) showTeddyBear();
+    clearInterval(spawnInterval); spawnInterval = null;
+    clearInterval(timerInterval); timerInterval = null;
+    startBtn.textContent = 'Start'; startBtn.disabled = false;
+
+    const overlay = document.createElement('div'); overlay.className = 'game-overlay';
+    const modal = document.createElement('div'); modal.className = 'game-modal';
+
+    modal.innerHTML = win
+        ? `<h3 class="pixel-text">You Win!</h3><p>Your score: <strong>${score}</strong></p><div id="teddy-bear"></div><div style="margin-top:10px;"><button id='retry' class='glow-btn'>Play Again</button> <a class='glow-btn' href='index.html'>Back</a></div>`
+        : `<h3 class="pixel-text">Time!</h3><p>Your score: <strong>${score}</strong></p><div style="margin-top:10px;"><button id='retry' class='glow-btn'>Play Again</button> <a class='glow-btn' href='index.html'>Back</a></div>`;
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+    document.getElementById('retry').addEventListener('click', () => { overlay.remove(); startGame(); });
+
+    if (win) showTeddyBear();
 }
 
 function showTeddyBear() {
-        const bearDiv = document.getElementById('teddy-bear');
-        if (!bearDiv) return;
-        bearDiv.innerHTML = `
+    const bearDiv = document.getElementById('teddy-bear');
+    if (!bearDiv) return;
+    bearDiv.innerHTML = `
         <div class="teddy-bear-anim">
             <svg viewBox="0 0 120 120" width="120" height="120">
                 <ellipse cx="60" cy="90" rx="32" ry="18" fill="#a67c52"/>
@@ -161,7 +161,7 @@ function showTeddyBear() {
 
 startBtn.addEventListener('click', startGame);
 
-gameArea.addEventListener('click', () => {});
+gameArea.addEventListener('click', () => { });
 
 window.addEventListener('blur', () => {
     const existing = gameArea.querySelectorAll('.game-heart');

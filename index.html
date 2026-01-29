@@ -1,95 +1,99 @@
-    <!-- Big Hello Kitty waving at the side -->
-    <div class="hello-kitty-wave-bg" aria-hidden="true">
-        <svg class="hello-kitty-wave-svg" viewBox="0 0 200 220" width="200" height="220">
-            <!-- Head -->
-            <ellipse cx="100" cy="90" rx="80" ry="70" fill="#fff" stroke="#222" stroke-width="4"/>
-            <!-- Left Ear -->
-            <ellipse cx="40" cy="30" rx="22" ry="16" fill="#fff" stroke="#222" stroke-width="4"/>
-            <!-- Right Ear -->
-            <ellipse cx="160" cy="30" rx="22" ry="16" fill="#fff" stroke="#222" stroke-width="4"/>
-            <!-- Face -->
-            <ellipse cx="70" cy="90" rx="12" ry="18" fill="#222"/>
-            <ellipse cx="130" cy="90" rx="12" ry="18" fill="#222"/>
-            <ellipse cx="100" cy="120" rx="16" ry="8" fill="#f9b"/>
-            <ellipse cx="100" cy="110" rx="7" ry="7" fill="#ffb300"/>
-            <!-- Whiskers -->
-            <rect x="10" y="100" width="30" height="3" rx="2" fill="#222"/>
-            <rect x="10" y="110" width="30" height="3" rx="2" fill="#222"/>
-            <rect x="160" y="100" width="30" height="3" rx="2" fill="#222"/>
-            <rect x="160" y="110" width="30" height="3" rx="2" fill="#222"/>
-            <!-- Bow -->
-            <ellipse cx="155" cy="45" rx="16" ry="10" fill="#ff1744" stroke="#222" stroke-width="2"/>
-            <ellipse cx="175" cy="45" rx="8" ry="8" fill="#ffb3c1" stroke="#222" stroke-width="2"/>
-            <ellipse cx="165" cy="35" rx="7" ry="7" fill="#ffb3c1" stroke="#222" stroke-width="2"/>
-            <!-- Body -->
-            <ellipse cx="100" cy="190" rx="55" ry="30" fill="#fff" stroke="#222" stroke-width="4"/>
-            <!-- Left Arm -->
-            <ellipse cx="40" cy="170" rx="18" ry="10" fill="#fff" stroke="#222" stroke-width="4"/>
-            <!-- Right Arm (waving) -->
-            <g class="kitty-wave-arm">
-                <ellipse cx="170" cy="150" rx="18" ry="10" fill="#fff" stroke="#222" stroke-width="4"/>
-                <ellipse cx="185" cy="150" rx="8" ry="8" fill="#fff" stroke="#222" stroke-width="3"/>
-            </g>
-        </svg>
-    </div>
+<div class="hello-kitty-wave-bg">
+    <svg class="hello-kitty-wave-svg" viewBox="0 0 200 220" width="200" height="220">
+
+        <ellipse cx="100" cy="90" rx="80" ry="70" fill="#fff" stroke="#222" stroke-width="4" />
+
+        <ellipse cx="40" cy="30" rx="22" ry="16" fill="#fff" stroke="#222" stroke-width="4" />
+
+        <ellipse cx="160" cy="30" rx="22" ry="16" fill="#fff" stroke="#222" stroke-width="4" />
+
+        <ellipse cx="70" cy="90" rx="12" ry="18" fill="#222" />
+        <ellipse cx="130" cy="90" rx="12" ry="18" fill="#222" />
+        <ellipse cx="100" cy="120" rx="16" ry="8" fill="#f9b" />
+        <ellipse cx="100" cy="110" rx="7" ry="7" fill="#ffb300" />
+
+        <rect x="10" y="100" width="30" height="3" rx="2" fill="#222" />
+        <rect x="10" y="110" width="30" height="3" rx="2" fill="#222" />
+        <rect x="160" y="100" width="30" height="3" rx="2" fill="#222" />
+        <rect x="160" y="110" width="30" height="3" rx="2" fill="#222" />
+
+        <ellipse cx="155" cy="45" rx="16" ry="10" fill="#ff1744" stroke="#222" stroke-width="2" />
+        <ellipse cx="175" cy="45" rx="8" ry="8" fill="#ffb3c1" stroke="#222" stroke-width="2" />
+        <ellipse cx="165" cy="35" rx="7" ry="7" fill="#ffb3c1" stroke="#222" stroke-width="2" />
+
+        <ellipse cx="100" cy="190" rx="55" ry="30" fill="#fff" stroke="#222" stroke-width="4" />
+
+        <ellipse cx="40" cy="170" rx="18" ry="10" fill="#fff" stroke="#222" stroke-width="4" />
+
+        <g class="kitty-wave-arm">
+            <ellipse cx="170" cy="150" rx="18" ry="10" fill="#fff" stroke="#222" stroke-width="4" />
+            <ellipse cx="185" cy="150" rx="8" ry="8" fill="#fff" stroke="#222" stroke-width="3" />
+        </g>
+    </svg>
+</div>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>HI LOVE</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=18">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
+
 <body>
     <audio id="bg-music" loop>
         <source src="https://assets.mixkit.co/music/preview/mixkit-romantic-piano-intro-2525.mp3" type="audio/mp3">
     </audio>
 
     <div class="pixel-bg"></div>
-    <div class="hello-kitty-bg" aria-hidden="true">
+    <div class="hello-kitty-bg">
         <svg class="hello-kitty-svg" viewBox="0 0 64 64" width="64" height="64">
             <g>
-                <ellipse cx="32" cy="40" rx="18" ry="10" fill="#fff" stroke="#222" stroke-width="2"/>
-                <ellipse cx="32" cy="28" rx="16" ry="14" fill="#fff" stroke="#222" stroke-width="2"/>
-                <ellipse cx="22" cy="22" rx="3" ry="5" fill="#fff" stroke="#222" stroke-width="2"/>
-                <ellipse cx="42" cy="22" rx="3" ry="5" fill="#fff" stroke="#222" stroke-width="2"/>
-                <ellipse cx="24" cy="28" rx="2.2" ry="2.8" fill="#222"/>
-                <ellipse cx="40" cy="28" rx="2.2" ry="2.8" fill="#222"/>
-                <ellipse cx="32" cy="34" rx="2.5" ry="1.2" fill="#f9b"/>
-                <ellipse cx="32" cy="32" rx="1.2" ry="1.2" fill="#ffb300"/>
-                <ellipse cx="18" cy="16" rx="2.2" ry="1.2" fill="#fff" stroke="#222" stroke-width="1.2"/>
-                <ellipse cx="46" cy="16" rx="2.2" ry="1.2" fill="#fff" stroke="#222" stroke-width="1.2"/>
-                <circle cx="48.5" cy="13.5" r="3.2" fill="#ff1744" stroke="#222" stroke-width="1.2"/>
-                <ellipse cx="50.5" cy="11.5" rx="1.2" ry="2.2" fill="#ffb3c1" stroke="#222" stroke-width="1.2"/>
+                <ellipse cx="32" cy="40" rx="18" ry="10" fill="#fff" stroke="#222" stroke-width="2" />
+                <ellipse cx="32" cy="28" rx="16" ry="14" fill="#fff" stroke="#222" stroke-width="2" />
+                <ellipse cx="22" cy="22" rx="3" ry="5" fill="#fff" stroke="#222" stroke-width="2" />
+                <ellipse cx="42" cy="22" rx="3" ry="5" fill="#fff" stroke="#222" stroke-width="2" />
+                <ellipse cx="24" cy="28" rx="2.2" ry="2.8" fill="#222" />
+                <ellipse cx="40" cy="28" rx="2.2" ry="2.8" fill="#222" />
+                <ellipse cx="32" cy="34" rx="2.5" ry="1.2" fill="#f9b" />
+                <ellipse cx="32" cy="32" rx="1.2" ry="1.2" fill="#ffb300" />
+                <ellipse cx="18" cy="16" rx="2.2" ry="1.2" fill="#fff" stroke="#222" stroke-width="1.2" />
+                <ellipse cx="46" cy="16" rx="2.2" ry="1.2" fill="#fff" stroke="#222" stroke-width="1.2" />
+                <circle cx="48.5" cy="13.5" r="3.2" fill="#ff1744" stroke="#222" stroke-width="1.2" />
+                <ellipse cx="50.5" cy="11.5" rx="1.2" ry="2.2" fill="#ffb3c1" stroke="#222" stroke-width="1.2" />
             </g>
         </svg>
     </div>
     <div class="floating-hearts" id="hearts-container"></div>
 
     <div id="app-viewport">
-        <a class="game-link" href="game.html" aria-label="Play the Catch the Heart game">Play Game</a>
-            <div class="tap-hint pixel-text" style="margin: 18px 0 0 0; color: #ff1744; font-size: 1.2rem; animation: textGlow 2s infinite; display: none;">Tap the heart to begin!</div>
-        <section id="step-music" class="step active" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh;">
+        <div class="tap-hint pixel-text"
+            style="margin: 18px 0 0 0; color: #ff1744; font-size: 1.2rem; animation: textGlow 2s infinite; display: none;">
+            Tap the heart to begin!</div>
+        <section id="step-music" class="step active">
             <h2 class="pixel-text" style="margin-bottom: 0;">Choose a song for us</h2>
-            <div id="music-choices" style="margin: 30px 0 20px 0; display: flex; flex-direction: column; gap: 18px; align-items: center;">
+            <div id="music-choices"
+                style="margin: 30px 0 20px 0; display: flex; flex-direction: column; gap: 18px; align-items: center;">
                 <button class="music-btn glow-btn" data-src="music/Happy W U.mp3">Happy W U</button>
                 <button class="music-btn glow-btn" data-src="music/Palagi.mp3">Palagi</button>
                 <button class="music-btn glow-btn" data-src="music/Tahanan.mp3">Tahanan</button>
             </div>
         </section>
 
-        <section id="step-typing" class="step hidden" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh;">
+        <section id="step-typing" class="step hidden">
             <h2 class="pixel-text" style="margin-bottom: 0;">Hi Love!</h2>
             <div id="typewriter-messages"></div>
             <button id="typing-continue" class="glow-btn hidden" style="margin-top:18px;">yes!</button>
         </section>
         <section id="step0" class="step hidden">
             <div class="pixel-card expanded">
-                
+
                 <div class="pixel-video-wrapper">
-                    <video id="intro-video" class="pixel-video" src="images/valentinevid.mov" playsinline poster="images/Env1.png.jpg" autoplay muted></video>
+                    <video id="intro-video" class="pixel-video" src="images/valentinevid.mov" playsinline
+                        poster="images/Env1.png.jpg" autoplay muted></video>
                 </div>
                 <div style="margin-top:16px;"><button id="skip-video" class="glow-btn">Continue</button></div>
             </div>
@@ -97,84 +101,92 @@
         <section id="step1" class="step hidden">
             <h2 class="pixel-text">tap the heart</h2>
             <div id="heart-trigger">
-                <div class="heart-icon pixel-heart" aria-hidden="true">
-                    <!-- pixel heart made of SVG rects for a chunky pixel look -->
-                        <!-- simple SVG heart -->
-                        <svg width="108" height="98" viewBox="0 0 108 98" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="heartMain" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stop-color="#ff8fa3"/>
-                                    <stop offset="60%" stop-color="#ff1744"/>
-                                    <stop offset="100%" stop-color="#b71c4f"/>
-                                </linearGradient>
-                                <radialGradient id="heartHighlight" cx="40%" cy="30%" r="60%">
-                                    <stop offset="0%" stop-color="#fff" stop-opacity="0.7"/>
-                                    <stop offset="100%" stop-color="#ff8fa3" stop-opacity="0"/>
-                                </radialGradient>
-                            </defs>
-                            <!-- Pixel border -->
-                            <path d="M54 92s-40-27-40-52C14 20 32 6 54 28 76 6 94 20 94 40c0 25-40 52-40 52z" fill="#fff" stroke="#b71c4f" stroke-width="7"/>
-                            <!-- Main heart -->
-                            <path d="M54 88s-36-24.6-36-46.8C18 20.6 34.8 8 54 26.6 73.2 8 90 20.6 90 33.2c0 22.2-36 46.8-36 46.8z" fill="url(#heartMain)" stroke="#b71c4f" stroke-width="4"/>
-                            <!-- Highlight -->
-                            <ellipse cx="44" cy="38" rx="14" ry="8" fill="url(#heartHighlight)"/>
-                            <!-- Pixel squares for chunky look -->
-                            <rect x="32" y="60" width="8" height="8" fill="#ffb3c1"/>
-                            <rect x="68" y="60" width="8" height="8" fill="#ffb3c1"/>
-                            <rect x="50" y="76" width="8" height="8" fill="#ffb3c1"/>
-                        </svg>
+                <div class="heart-icon pixel-heart">
+
+                    <svg width="108" height="98" viewBox="0 0 108 98" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="heartMain" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#ff8fa3" />
+                                <stop offset="60%" stop-color="#ff1744" />
+                                <stop offset="100%" stop-color="#b71c4f" />
+                            </linearGradient>
+                            <radialGradient id="heartHighlight" cx="40%" cy="30%" r="60%">
+                                <stop offset="0%" stop-color="#fff" stop-opacity="0.7" />
+                                <stop offset="100%" stop-color="#ff8fa3" stop-opacity="0" />
+                            </radialGradient>
+                        </defs>
+
+                        <path d="M54 92s-40-27-40-52C14 20 32 6 54 28 76 6 94 20 94 40c0 25-40 52-40 52z" fill="#fff"
+                            stroke="#b71c4f" stroke-width="7" />
+
+                        <path
+                            d="M54 88s-36-24.6-36-46.8C18 20.6 34.8 8 54 26.6 73.2 8 90 20.6 90 33.2c0 22.2-36 46.8-36 46.8z"
+                            fill="url(#heartMain)" stroke="#b71c4f" stroke-width="4" />
+
+                        <ellipse cx="44" cy="38" rx="14" ry="8" fill="url(#heartHighlight)" />
+
+                        <rect x="32" y="60" width="8" height="8" fill="#ffb3c1" />
+                        <rect x="68" y="60" width="8" height="8" fill="#ffb3c1" />
+                        <rect x="50" y="76" width="8" height="8" fill="#ffb3c1" />
+                    </svg>
                 </div>
                 <div class="ripple"></div>
             </div>
             <div id="loader-ui" class="hidden">
-                <!-- Removed 'BOOTING LOVE...' text -->
-                    <div class="pixel-text loading-pixel rainbow-text">LOADING</div>
-                <div class="pixel-loader-container"><div id="bar-fill"></div></div>
+
+                <div class="pixel-text loading-pixel rainbow-text">LOADING</div>
+                <div class="pixel-loader-container">
+                    <div id="bar-fill"></div>
+                </div>
             </div>
         </section>
 
         <section id="step2" class="step hidden">
             <h1 class="pixel-text env-title">💌 Memory Gallery 💌</h1>
-            <p class="envelope-subtitle">Our landian moments</p>
+            <p class="envelope-subtitle">Tap all envelopes to see our landian hehe</p>
+
             <div class="envelope-grid">
-                                <div class="env-wrapper" onclick="handleEnvelope(this)">
-                                    <div class="env-main">
-                                        <div class="env-flap-top"></div>
-                                        <div class="env-flap-bottom"></div>
-                                        <div class="env-flap-left"></div>
-                                        <div class="env-flap-right"></div>
-                                        <div class="env-photo"><img src="images/Env1.png.jpg"></div>
-                                    </div>
-                                </div>
-                                <div class="env-wrapper" onclick="handleEnvelope(this)">
-                                    <div class="env-main">
-                                        <div class="env-flap-top"></div>
-                                        <div class="env-flap-bottom"></div>
-                                        <div class="env-flap-left"></div>
-                                        <div class="env-flap-right"></div>
-                                        <div class="env-photo"><img src="images/Env2.png.JPG"></div>
-                                    </div>
-                                </div>
-                                <div class="env-wrapper" onclick="handleEnvelope(this)">
-                                    <div class="env-main">
-                                        <div class="env-flap-top"></div>
-                                        <div class="env-flap-bottom"></div>
-                                        <div class="env-flap-left"></div>
-                                        <div class="env-flap-right"></div>
-                                        <div class="env-photo"><img src="images/Env3.png.jpg"></div>
-                                    </div>
-                                </div>
-                                <div class="env-wrapper" onclick="handleEnvelope(this)">
-                                    <div class="env-main">
-                                        <div class="env-flap-top"></div>
-                                        <div class="env-flap-bottom"></div>
-                                        <div class="env-flap-left"></div>
-                                        <div class="env-flap-right"></div>
-                                        <div class="env-photo"><img src="images/Env4.png.jpg"></div>
-                                    </div>
-                                </div>
+                <div class="env-wrapper" onclick="handleEnvelope(this)">
+                    <div class="env-main">
+                        <div class="env-flap-top"></div>
+                        <div class="env-flap-bottom"></div>
+                        <div class="env-flap-left"></div>
+                        <div class="env-flap-right"></div>
+                        <div class="env-photo"><img src="images/Env1.png.jpg"></div>
+                    </div>
+                </div>
+                <div class="env-wrapper" onclick="handleEnvelope(this)">
+                    <div class="env-main">
+                        <div class="env-flap-top"></div>
+                        <div class="env-flap-bottom"></div>
+                        <div class="env-flap-left"></div>
+                        <div class="env-flap-right"></div>
+                        <div class="env-photo"><img src="images/Env2.png.JPG"></div>
+                    </div>
+                </div>
+                <div class="env-wrapper" onclick="handleEnvelope(this)">
+                    <div class="env-main">
+                        <div class="env-flap-top"></div>
+                        <div class="env-flap-bottom"></div>
+                        <div class="env-flap-left"></div>
+                        <div class="env-flap-right"></div>
+                        <div class="env-photo"><img src="images/Env3.png.jpg"></div>
+                    </div>
+                </div>
+                <div class="env-wrapper" onclick="handleEnvelope(this)">
+                    <div class="env-main">
+                        <div class="env-flap-top"></div>
+                        <div class="env-flap-bottom"></div>
+                        <div class="env-flap-left"></div>
+                        <div class="env-flap-right"></div>
+                        <div class="env-photo"><img src="images/Env4.png.jpg"></div>
+                    </div>
+                </div>
             </div>
-            <button id="nav-to-pw" class="glow-btn hidden" onclick="nextStep()">Continue</button>
+
+
+            <button id="nav-to-pw" class="glow-btn hidden" onclick="nextStep()"
+                style="margin-top: 20px;">Continue</button>
         </section>
 
         <section id="step3" class="step hidden">
@@ -189,18 +201,25 @@
         <section id="step4" class="step hidden">
             <div class="pixel-card expanded">
                 <h2 class="pixel-text">Trivia Test</h2>
-                <div class="quiz-item"><p>what is my favorite food?</p><input type="text" id="ans-food" placeholder="..."></div>
-                <div class="quiz-item"><p>what is my favorite color?</p><input type="text" id="ans-color" placeholder="..."></div>
-                <div class="quiz-item"><p>what is our dog's name</p><input type="text" id="ans-dog" placeholder="..."></div>
+                <div class="quiz-item">
+                    <p>what is my favorite food?</p><input type="text" id="ans-food" placeholder="...">
+                </div>
+                <div class="quiz-item">
+                    <p>what is my favorite color?</p><input type="text" id="ans-color" placeholder="...">
+                </div>
+                <div class="quiz-item">
+                    <p>what is our dog's name</p><input type="text" id="ans-dog" placeholder="...">
+                </div>
                 <button class="glow-btn" onclick="checkTrivia()">Verify</button>
             </div>
         </section>
 
-        <section id="step5"
-         class="step hidden">
+        <section id="step5" class="step hidden">
             <div class="pixel-card expanded">
                 <h2 class="pixel-text">Why I Love You</h2>
-                <div class="slider-box"><p id="reason-text" class="big-reason"></p></div>
+                <div class="slider-box">
+                    <p id="reason-text" class="big-reason"></p>
+                </div>
                 <div class="slider-controls">
                     <button class="arrow-btn" onclick="prevReason()">◀</button>
                     <span id="reason-count" class="pixel-text">1/5</span>
@@ -213,14 +232,14 @@
         <section id="step6" class="step hidden">
             <div class="pixel-card expanded bouquet-card">
                 <h1 class="pixel-text">Make our Bouquet</h1>
-                    <div class="vase-station">
-                    <div id="flower-bed"></div> 
+                <div class="vase-station">
+                    <div id="flower-bed"></div>
                     <div class="vase-glass"></div>
                     <div class="ribbon">
                         <svg width="36" height="28" viewBox="0 0 36 28" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="0" y="6" width="10" height="8" fill="#ff4081"/>
-                            <rect x="26" y="6" width="10" height="8" fill="#ff4081"/>
-                            <rect x="10" y="6" width="16" height="8" fill="#ff1744"/>
+                            <rect x="0" y="6" width="10" height="8" fill="#ff4081" />
+                            <rect x="26" y="6" width="10" height="8" fill="#ff4081" />
+                            <rect x="10" y="6" width="16" height="8" fill="#ff1744" />
                         </svg>
                     </div>
                 </div>
@@ -239,7 +258,8 @@
                 <h1 id="typewriter-text" class="pixel-text big"></h1>
                 <div class="dual-btns">
                     <button id="yes-btn" class="glow-btn" onclick="accept()">YES!</button>
-                    <button id="runaway-no" class="glow-btn alt-btn" onmouseenter="dodgeNo(event)" ontouchstart="dodgeNo(event)">No</button>
+                    <button id="runaway-no" class="glow-btn alt-btn" onmouseenter="dodgeNo(event)"
+                        ontouchstart="dodgeNo(event)">No</button>
                 </div>
             </div>
             <div id="celebration-ui" class="hidden">
@@ -248,6 +268,8 @@
             </div>
         </section>
     </div>
-    <script src="script.js"></script>
+    <script src="script.js?v=18"></script>
+    <a class="game-link" href="game.html">Play Game</a>
 </body>
+
 </html>

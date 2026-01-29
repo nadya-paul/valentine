@@ -1,15 +1,15 @@
-// Utility to show/hide Hello Kitty waving based on step
+
 function updateKittyWaveVisibility(stepId) {
     const kitty = document.querySelector('.hello-kitty-wave-bg');
     if (!kitty) return;
-    // Show for steps before and including step6, hide for step7 and beyond
-    if (["step-typing","step-music","step0","step1","step2","step3","step4","step5","step6"].includes(stepId)) {
+
+    if (["step-typing", "step-music", "step0", "step1", "step2", "step3", "step4", "step5", "step6"].includes(stepId)) {
         kitty.style.display = '';
     } else {
         kitty.style.display = 'none';
     }
 }
-// Step navigation logic
+
 let currentStep = 0;
 
 function showStep(stepId) {
@@ -25,11 +25,13 @@ function showStep(stepId) {
     updateKittyWaveVisibility(stepId);
 }
 
-// Typewriter intro logic
+
 const typewriterMessages = [
     "hi love",
-    "i hope u're doing well rn",
-    "ik na u're having tampo sakin before but this is also one of my way to show u what i can do for u and this is one of my bawi",
+    "i hope u're doing fine rn",
+    "ik recently is madalas ang tampo but dw i told u naman",
+    "na ill bawi and this is just one of my way to do it",
+    "told you ako lang makakagawa sayo neto",
     "hehe",
     "should we proceed?"
 ];
@@ -65,7 +67,7 @@ function typeWriterLines(lines, container, cb) {
                 }
                 lineEl.innerHTML = html + '<span class="typewriter-cursor">|</span>';
                 charIdx++;
-                setTimeout(typeChar, 80 + Math.random()*60);
+                setTimeout(typeChar, 80 + Math.random() * 60);
             } else {
                 let html = '';
                 for (let i = 0; i < line.length; i++) {
@@ -86,67 +88,67 @@ function typeWriterLines(lines, container, cb) {
     typeLine();
 }
 
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', function () {
     updateKittyWaveVisibility('step-typing');
-    // Only run typewriter if step-typing is present and active
+
     const typingStep = document.getElementById('step-typing');
     if (typingStep && typingStep.classList.contains('active')) {
         const msgBox = document.getElementById('typewriter-messages');
         const continueBtn = document.getElementById('typing-continue');
-        typeWriterLines(typewriterMessages, msgBox, function() {
+        typeWriterLines(typewriterMessages, msgBox, function () {
             continueBtn.classList.remove('hidden');
         });
-        continueBtn.addEventListener('click', function() {
+        continueBtn.addEventListener('click', function () {
             showStep('step-music');
             currentStep = 'music';
         });
     }
 
-    // Music selection logic
-        const musicStep = document.getElementById('step-music');
-        if (musicStep) {
-            const musicBtns = musicStep.querySelectorAll('.music-btn');
-            musicBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    // Set and play selected music
-                    const src = btn.getAttribute('data-src');
-                    let audio = document.getElementById('bg-music');
-                    if (!audio) {
-                        audio = document.createElement('audio');
-                        audio.id = 'bg-music';
-                        audio.loop = true;
-                        document.body.appendChild(audio);
-                    }
-                    audio.src = src;
-                    audio.volume = 0.7;
-                    audio.play();
-                    // Go to typewriter message step
-                    showStep('step-typing');
-                    currentStep = 'typing';
-                    // Start typewriter effect after music choice
-                    const msgBox = document.getElementById('typewriter-messages');
-                    const continueBtn = document.getElementById('typing-continue');
-                    msgBox.innerHTML = '';
-                    continueBtn.classList.add('hidden');
-                    typeWriterLines(typewriterMessages, msgBox, function() {
-                        continueBtn.classList.remove('hidden');
-                    });
-                    continueBtn.onclick = function() {
-                        showStep('step0');
-                        currentStep = 0;
-                    };
+
+    const musicStep = document.getElementById('step-music');
+    if (musicStep) {
+        const musicBtns = musicStep.querySelectorAll('.music-btn');
+        musicBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+
+                const src = btn.getAttribute('data-src');
+                let audio = document.getElementById('bg-music');
+                if (!audio) {
+                    audio = document.createElement('audio');
+                    audio.id = 'bg-music';
+                    audio.loop = true;
+                    document.body.appendChild(audio);
+                }
+                audio.src = src;
+                audio.volume = 0.7;
+                audio.play();
+
+                showStep('step-typing');
+                currentStep = 'typing';
+
+                const msgBox = document.getElementById('typewriter-messages');
+                const continueBtn = document.getElementById('typing-continue');
+                msgBox.innerHTML = '';
+                continueBtn.classList.add('hidden');
+                typeWriterLines(typewriterMessages, msgBox, function () {
+                    continueBtn.classList.remove('hidden');
                 });
+                continueBtn.onclick = function () {
+                    showStep('step0');
+                    currentStep = 0;
+                };
             });
-        }
+        });
+    }
 });
 
-// Restore: Continue goes to heart step (step1)
-document.getElementById('skip-video').addEventListener('click', function() {
+
+document.getElementById('skip-video').addEventListener('click', function () {
     showStep('step1');
     currentStep = 1;
-    // Music should keep playing until the flower part (step6)
+
 });
-const PASSWORD = "CLUBHOUSE"; 
+const PASSWORD = "CLUBHOUSE";
 const TRIVIA = { food: "ADOBO", color: "RED", dog: "SAYSAY" };
 const REASONS = [
     "You are my home.",
@@ -156,28 +158,28 @@ const REASONS = [
     "Loving you feels so right."
 ];
 
-// PIXEL SOUND EFFECTS
+
 function playPixelSound(type = 'beep') {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
-    
-    if(type === 'beep') {
+
+    if (type === 'beep') {
         oscillator.frequency.value = 800;
         gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
         gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
         oscillator.start(audioContext.currentTime);
         oscillator.stop(audioContext.currentTime + 0.1);
-    } else if(type === 'success') {
+    } else if (type === 'success') {
         oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
         oscillator.frequency.linearRampToValueAtTime(800, audioContext.currentTime + 0.2);
         gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
         gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
         oscillator.start(audioContext.currentTime);
         oscillator.stop(audioContext.currentTime + 0.2);
-    } else if(type === 'error') {
+    } else if (type === 'error') {
         oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
         gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
         gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
@@ -196,26 +198,28 @@ const FLOWER_DESIGNS = {
 let reasonIdx = 0;
 let fCount = 0;
 
-// Create background animation
+
 function createBgHearts() {
     const container = document.getElementById('hearts-container');
-    for(let i=0; i<20; i++) {
+    for (let i = 0; i < 20; i++) {
         const h = document.createElement('div');
         h.className = 'bg-heart';
         h.innerText = '❤️';
         h.style.left = Math.random() * 100 + 'vw';
+        h.style.bottom = '0';
         h.style.animationDelay = Math.random() * 8 + 's';
         h.style.fontSize = (Math.random() * 30 + 15) + 'px';
         h.style.setProperty('--sway-offset', (Math.random() * 60 - 30) + 'px');
         container.appendChild(h);
     }
-    // Add hearts continuously
+
     setInterval(() => {
-        if(container.children.length < 30) {
+        if (container.children.length < 30) {
             const h = document.createElement('div');
             h.className = 'bg-heart';
             h.innerText = '❤️';
             h.style.left = Math.random() * 100 + 'vw';
+            h.style.bottom = '0';
             h.style.animationDelay = '0s';
             h.style.fontSize = (Math.random() * 30 + 15) + 'px';
             container.appendChild(h);
@@ -223,7 +227,7 @@ function createBgHearts() {
     }, 5000);
 }
 
-// Create romantic sparkle effects
+
 function createSparkles() {
     const container = document.getElementById('hearts-container');
     setInterval(() => {
@@ -235,15 +239,15 @@ function createSparkles() {
         sparkle.style.animationDelay = Math.random() * 0.5 + 's';
         sparkle.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
         container.appendChild(sparkle);
-        
+
         setTimeout(() => sparkle.remove(), 3000);
     }, 600);
 }
 
-// Create pixelated stars
+
 function createStars() {
     const container = document.getElementById('hearts-container');
-    for(let i = 0; i < 15; i++) {
+    for (let i = 0; i < 15; i++) {
         const star = document.createElement('div');
         star.className = 'pixel-star';
         star.innerHTML = '⭐';
@@ -254,13 +258,13 @@ function createStars() {
     }
 }
 
-// Create romantic particles (fireworks effect)
+
 function createFireworks() {
     setInterval(() => {
         const x = Math.random() * 100;
         const y = Math.random() * 50 + 10;
-        
-        for(let i = 0; i < 8; i++) {
+
+        for (let i = 0; i < 8; i++) {
             const particle = document.createElement('div');
             particle.className = 'firework-particle';
             particle.style.left = x + 'vw';
@@ -268,13 +272,13 @@ function createFireworks() {
             particle.style.setProperty('--angle', (360 / 8 * i) + 'deg');
             particle.innerHTML = ['❤️', '💕', '💖', '💝', '💗', '💓', '💞', '💘'][i];
             document.body.appendChild(particle);
-            
+
             setTimeout(() => particle.remove(), 2500);
         }
     }, 3500);
 }
 
-// Create floating pixels
+
 function createFloatingPixels() {
     const container = document.getElementById('hearts-container');
     setInterval(() => {
@@ -290,18 +294,20 @@ function createFloatingPixels() {
         pixel.style.zIndex = '0';
         pixel.style.animation = 'pixelFloat 4s ease-in-out forwards';
         container.appendChild(pixel);
-        
+
         setTimeout(() => pixel.remove(), 4000);
     }, 1000);
 }
 
+
+createBgHearts();
 createStars();
 createSparkles();
-createFireworks();
+
 createFloatingPixels();
 
 function nextStep() {
-    // Hide all steps
+
     document.querySelectorAll('.step').forEach(s => {
         s.classList.remove('active');
         s.classList.add('hidden');
@@ -310,31 +316,32 @@ function nextStep() {
     const nextSection = document.getElementById('step' + currentStep);
     nextSection.classList.remove('hidden');
     nextSection.classList.add('active');
-    if(currentStep === 5) updateSlider();
-    // Stop music after the flower part, when Done is pressed (step7)
-    if(currentStep === 7) {
+    if (currentStep === 5) updateSlider();
+
+    if (currentStep === 7) {
         let audio = document.getElementById('bg-music');
-        if(audio) { audio.pause(); audio.currentTime = 0; }
+        if (audio) { audio.pause(); audio.currentTime = 0; }
         typeWriter();
     }
-    // Add celebration particles
+
     confetti({ particleCount: 8, origin: { y: 0.3 } });
 }
 
-// 1. START & PIXEL LOADER
-document.getElementById('heart-trigger').onclick = function() {
+
+document.getElementById('heart-trigger').onclick = function () {
     playPixelSound('success');
-    document.getElementById('bg-music').play().catch(() => {});
+    document.getElementById('bg-music').play().catch(() => { });
     this.classList.add('pulse-exit');
-    document.querySelector('.tap-hint').classList.add('hidden');
+    const hint = document.querySelector('.tap-hint');
+    if (hint) hint.classList.add('hidden');
     document.getElementById('loader-ui').classList.remove('hidden');
     let w = 0;
     document.getElementById('bar-fill').style.width = '0%';
     let t = setInterval(() => {
         w += 1;
         document.getElementById('bar-fill').style.width = w + '%';
-        if(w % 25 === 0) playPixelSound('beep');
-        if(w >= 100) {
+        if (w % 25 === 0) playPixelSound('beep');
+        if (w >= 100) {
             clearInterval(t);
             document.getElementById('loader-ui').classList.add('hidden');
             setTimeout(nextStep, 500);
@@ -342,23 +349,32 @@ document.getElementById('heart-trigger').onclick = function() {
     }, 25);
 };
 
-// 2. ENVELOPES
+
 function handleEnvelope(el) {
-    if(el.classList.contains('open')) return;
+    if (el.classList.contains('open')) return;
+
     playPixelSound('beep');
     el.classList.add('open');
-    // Reveal the photo (handled by CSS)
+
+
     const openCount = document.querySelectorAll('.env-wrapper.open').length;
-    if(openCount >= 4) {
+
+
+    if (openCount >= 4) {
         playPixelSound('success');
-        setTimeout(() => document.getElementById('nav-to-pw').classList.remove('hidden'), 300);
+        setTimeout(() => {
+            const btn = document.getElementById('nav-to-pw');
+            btn.classList.remove('hidden');
+
+            confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+        }, 500);
     }
 }
 
-// 3. PASSWORD
+
 function verifyAccess() {
     const input = document.getElementById('pw-field').value.toUpperCase().trim();
-    if(input === PASSWORD) {
+    if (input === PASSWORD) {
         playPixelSound('success');
         nextStep();
     } else {
@@ -376,61 +392,61 @@ function verifyAccess() {
     }
 }
 
-// 4. TRIVIA
+
 function checkTrivia() {
     const f = document.getElementById('ans-food').value.toUpperCase().trim();
     const c = document.getElementById('ans-color').value.toUpperCase().trim();
     const d = document.getElementById('ans-dog').value.toUpperCase().trim();
-    
+
     const allCorrect = f === TRIVIA.food && c === TRIVIA.color && d === TRIVIA.dog;
-    if(allCorrect) {
+    if (allCorrect) {
         playPixelSound('success');
         nextStep();
     } else {
         playPixelSound('error');
         const hints = [];
-        if(f !== TRIVIA.food) hints.push('Food ✗');
-        if(c !== TRIVIA.color) hints.push('Color ✗');
-        if(d !== TRIVIA.dog) hints.push('Dog ✗');
-        
+        if (f !== TRIVIA.food) hints.push('Food ✗');
+        if (c !== TRIVIA.color) hints.push('Color ✗');
+        if (d !== TRIVIA.dog) hints.push('Dog ✗');
+
         document.querySelectorAll('.quiz-item input').forEach(inp => {
             inp.classList.add('shake');
             setTimeout(() => inp.classList.remove('shake'), 500);
         });
-        
+
         const msg = `Check: ${hints.join(', ')} | Try: (ADOBO, RED, SAYSAY)`;
         alert(msg);
     }
 }
 
-// 5. SLIDER
+
 function updateSlider() {
     document.getElementById('reason-text').innerText = REASONS[reasonIdx];
     document.getElementById('reason-count').innerText = `${reasonIdx + 1}/5`;
-    if(reasonIdx === 4) document.getElementById('nav-to-flowers').classList.remove('hidden');
+    if (reasonIdx === 4) document.getElementById('nav-to-flowers').classList.remove('hidden');
 }
-function nextReason() { if(reasonIdx < 4) { reasonIdx++; playPixelSound('beep'); updateSlider(); } }
-function prevReason() { if(reasonIdx > 0) { reasonIdx--; playPixelSound('beep'); updateSlider(); } }
+function nextReason() { if (reasonIdx < 4) { reasonIdx++; playPixelSound('beep'); updateSlider(); } }
+function prevReason() { if (reasonIdx > 0) { reasonIdx--; playPixelSound('beep'); updateSlider(); } }
 
-// 6. FLOWERS (INSIDE VASE)
+
 function spawnFlower(type) {
-    if(fCount >= 10) return;
+    if (fCount >= 10) return;
     playPixelSound('beep');
     const bed = document.getElementById('flower-bed');
     const div = document.createElement('div');
     div.className = 'pixel-flower-svg';
     div.innerHTML = FLOWER_DESIGNS[type];
     const rot = Math.random() * 60 - 30;
-    // Stack flowers inside vase from bottom up
+
     const baseBottom = 20 + (fCount * 8);
     div.style.bottom = `${baseBottom}px`;
     div.style.setProperty('--r', `${rot}deg`);
     bed.appendChild(div);
     fCount++;
     confetti({ particleCount: 20, origin: { y: 0.7 } });
-    
-    // Add sparkle effect when flower is added
-    for(let i = 0; i < 4; i++) {
+
+
+    for (let i = 0; i < 4; i++) {
         const sparkle = document.createElement('div');
         sparkle.className = 'sparkle';
         sparkle.innerHTML = '✨';
@@ -441,20 +457,20 @@ function spawnFlower(type) {
         document.getElementById('hearts-container').appendChild(sparkle);
         setTimeout(() => sparkle.remove(), 3000);
     }
-    
-    // Show continue button after 2 flowers added
-    if(fCount >= 2) {
+
+
+    if (fCount >= 2) {
         const navBtn = document.getElementById('nav-to-final');
-        if(navBtn) navBtn.classList.remove('hidden');
+        if (navBtn) navBtn.classList.remove('hidden');
     }
-    
-    // Extra celebration when bouquet is full
-    if(fCount >= 10) {
+
+
+    if (fCount >= 10) {
         playPixelSound('success');
-        for(let j = 0; j < 3; j++) {
+        for (let j = 0; j < 3; j++) {
             setTimeout(() => {
-                confetti({ 
-                    particleCount: 30, 
+                confetti({
+                    particleCount: 30,
                     origin: { y: 0.5 },
                     spread: 60
                 });
@@ -463,13 +479,13 @@ function spawnFlower(type) {
     }
 }
 
-// 7. FINALE
+
 function accept() {
     playPixelSound('success');
-    // Stop any previous music
+
     let audio = document.getElementById('bg-music');
-    if(audio) { audio.pause(); audio.currentTime = 0; }
-    // Play Marry You music
+    if (audio) { audio.pause(); audio.currentTime = 0; }
+
     let marryAudio = document.getElementById('marry-music');
     if (!marryAudio) {
         marryAudio = document.createElement('audio');
@@ -487,7 +503,7 @@ function accept() {
     (function frame() {
         confetti({ particleCount: 4, angle: 60, spread: 55, origin: { x: 0, y: 0.6 } });
         confetti({ particleCount: 4, angle: 120, spread: 55, origin: { x: 1, y: 0.6 } });
-        if(beatCount % 20 === 0) playPixelSound('beep');
+        if (beatCount % 20 === 0) playPixelSound('beep');
         beatCount++;
         if (Date.now() < end) requestAnimationFrame(frame);
     }());
@@ -500,27 +516,27 @@ function dodgeNo(event) {
     const noBtn = document.getElementById('runaway-no');
     const yesBtn = document.getElementById('yes-btn');
     noClickCount++;
-    
-    // Random dodge position
+
+
     const randomX = (Math.random() - 0.5) * 200;
     const randomY = (Math.random() - 0.5) * 100;
-    
+
     noBtn.style.position = 'relative';
     noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
-    
+
     playPixelSound('beep');
-    
-    // Show angry effect at each dodge
+
+
     noBtn.classList.add('angry-dodge');
     setTimeout(() => noBtn.classList.remove('angry-dodge'), 300);
-    
-    // Expand YES button gradually
+
+
     const scale = 1 + (noClickCount * 0.1);
     yesBtn.style.fontSize = (1.6 + noClickCount * 0.15) + 'rem';
     yesBtn.style.transform = `scale(${Math.min(scale, 1.8)})`;
-    
-    // After 5 dodges, show mega angry animation
-    if(noClickCount >= 5) {
+
+
+    if (noClickCount >= 5) {
         showAngryAnimation();
     }
 }
@@ -528,12 +544,12 @@ function dodgeNo(event) {
 function showAngryAnimation() {
     const noBtn = document.getElementById('runaway-no');
     const yesBtn = document.getElementById('yes-btn');
-    
+
     noBtn.classList.add('button-angry');
     noBtn.disabled = true;
     yesBtn.classList.add('button-huge');
-    
-    // Create angry Pacman animation
+
+
     const pacman = document.createElement('div');
     pacman.style.position = 'fixed';
     pacman.style.left = (noBtn.getBoundingClientRect().left + 50) + 'px';
@@ -553,9 +569,9 @@ function showAngryAnimation() {
         </svg>
     `;
     document.body.appendChild(pacman);
-    
-    // Create angry particles
-    for(let i = 0; i < 8; i++) {
+
+
+    for (let i = 0; i < 8; i++) {
         const angerParticle = document.createElement('div');
         angerParticle.style.position = 'fixed';
         angerParticle.style.left = (noBtn.getBoundingClientRect().left + 50) + 'px';
@@ -570,12 +586,12 @@ function showAngryAnimation() {
         angerParticle.innerHTML = '❌';
         angerParticle.style.fontSize = '1.2rem';
         document.body.appendChild(angerParticle);
-        
+
         setTimeout(() => angerParticle.remove(), 1000);
     }
-    
+
     setTimeout(() => pacman.remove(), 1500);
-    
+
     playPixelSound('error');
     playPixelSound('error');
 }
@@ -584,6 +600,6 @@ function typeWriter() {
     const text = "Will you be my Valentine?";
     let i = 0; const el = document.getElementById('typewriter-text');
     el.innerHTML = "";
-    function type() { if(i < text.length) { el.innerHTML += text.charAt(i); i++; setTimeout(type, 100); } }
+    function type() { if (i < text.length) { el.innerHTML += text.charAt(i); i++; setTimeout(type, 100); } }
     type();
 }
