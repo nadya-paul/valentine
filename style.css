@@ -1826,6 +1826,13 @@ input:focus {
     overflow: hidden;
 }
 
+.quiz-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
 .game-stats {
     display: flex;
     gap: 12px;
@@ -1898,6 +1905,115 @@ input:focus {
     padding: 18px;
     border-radius: 10px;
     text-align: center;
+}
+
+.quiz-subtitle {
+    font-size: 0.9rem;
+    color: #b71c4f;
+    margin-top: 2px;
+}
+
+.quiz-panel {
+    width: 100%;
+    max-width: 520px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    padding: 18px 16px;
+    border: 3px solid #ffb3c1;
+    box-shadow: 0 10px 24px rgba(255, 77, 109, 0.18);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+    animation: quizPanelIn 0.4s ease-out forwards;
+}
+
+.quiz-panel-active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.quiz-question {
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+.quiz-helper {
+    font-size: 0.95rem;
+    text-align: center;
+    color: #b71c4f;
+}
+
+.quiz-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    width: 100%;
+    margin-top: 4px;
+}
+
+.quiz-option-btn {
+    width: 100%;
+    font-size: 1.2rem;
+    padding: 8px 4px;
+}
+
+.quiz-pulse-ring {
+    position: absolute;
+    inset: 10px;
+    border-radius: 16px;
+    border: 3px solid rgba(255, 77, 109, 0.6);
+    pointer-events: none;
+    animation: quizPulse 0.6s ease-out forwards;
+}
+
+.quiz-correct-flash {
+    animation: quizCorrect 0.3s ease-out;
+}
+
+.quiz-wrong-shake {
+    animation: quizWrong 0.4s ease-out;
+}
+
+@keyframes quizPanelIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes quizPulse {
+    0% {
+        opacity: 0.7;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.1);
+    }
+}
+
+@keyframes quizCorrect {
+    0% {
+        box-shadow: 0 0 0 rgba(76, 175, 80, 0.0);
+    }
+    100% {
+        box-shadow: 0 0 30px rgba(76, 175, 80, 0.6);
+    }
+}
+
+@keyframes quizWrong {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    50% { transform: translateX(6px); }
+    75% { transform: translateX(-3px); }
 }
 
 @media (max-width: 600px) {

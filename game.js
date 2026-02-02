@@ -2,140 +2,274 @@ const gameArea = document.getElementById('game-area');
 const startBtn = document.getElementById('start-btn');
 const scoreEl = document.getElementById('score');
 const timeEl = document.getElementById('time');
+const quizIntro = document.getElementById('quiz-intro');
+const quizContainer = document.getElementById('quiz-container');
+const quizQuestionEl = document.getElementById('quiz-question');
+const quizOptionsEl = document.getElementById('quiz-options');
+const quizResult = document.getElementById('quiz-result');
+const quizResultTitle = document.getElementById('quiz-result-title');
+const quizResultMessage = document.getElementById('quiz-result-message');
+const teddyBearContainer = document.getElementById('teddy-bear');
+const retryBtn = document.getElementById('retry-btn');
 
 let score = 0;
-let timeLeft = 20;
-let spawnInterval = null;
+let timeLeft = 60;
 let timerInterval = null;
+let currentQuestionIndex = 0;
 
 function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
-function spawnHeart() {
-    const heart = document.createElement('div');
-    heart.className = 'game-heart animated-heart fancy-heart';
-    heart.innerHTML = `
-        <svg viewBox="0 0 96 86" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <radialGradient id="heartGrad" cx="50%" cy="50%" r="60%">
-                    <stop offset="0%" stop-color="#fff" stop-opacity="0.8"/>
-                    <stop offset="80%" stop-color="#ff1744"/>
-                </radialGradient>
-            </defs>
-            <path d="M48 78s-36-24.6-36-46.8C12 18.6 28.8 6 48 24.6 67.2 6 84 18.6 84 31.2c0 22.2-36 46.8-36 46.8z" fill="url(#heartGrad)" stroke="#b71c4f" stroke-width="4"/>
-        </svg>`;
+const QUESTIONS = [
+    {
+        q: "Who is known as the national hero of the Philippines?",
+        options: ["Jose Rizal", "Andres Bonifacio", "Emilio Aguinaldo"],
+        answer: "Jose Rizal"
+    },
+    {
+        q: "In what year did the EDSA People Power Revolution happen?",
+        options: ["1986", "1972", "1991"],
+        answer: "1986"
+    },
+    {
+        q: "Which city is considered the oldest city in the Philippines?",
+        options: ["Cebu City", "Manila", "Davao City"],
+        answer: "Cebu City"
+    },
+    {
+        q: "Who wrote the novel 'Noli Me Tangere'?",
+        options: ["Jose Rizal", "Apolinario Mabini", "Marcelo H. del Pilar"],
+        answer: "Jose Rizal"
+    },
+    {
+        q: "What is the former name of the Philippines under Spanish rule?",
+        options: ["Las Islas Filipinas", "Maharlika", "La Isla Bonita"],
+        answer: "Las Islas Filipinas"
+    },
+    {
+        q: "Who is known as the 'Brains of the Philippine Revolution'?",
+        options: ["Apolinario Mabini", "Antonio Luna", "Melchora Aquino"],
+        answer: "Apolinario Mabini"
+    },
+    {
+        q: "Which Philippine president declared Martial Law in 1972?",
+        options: ["Ferdinand Marcos", "Corazon Aquino", "Manuel L. Quezon"],
+        answer: "Ferdinand Marcos"
+    },
+    {
+        q: "Where did Lapu-Lapu and his warriors defeat Magellan?",
+        options: ["Mactan", "Manila Bay", "Intramuros"],
+        answer: "Mactan"
+    },
+    {
+        q: "What is the name of the blood compact between Legazpi and Sikatuna?",
+        options: ["Sandugo", "La Solidaridad", "Pact of Biak-na-Bato"],
+        answer: "Sandugo"
+    },
+    {
+        q: "Which movement pushed for reforms through writing and peaceful means?",
+        options: ["Propaganda Movement", "Katipunan", "Hukbalahap"],
+        answer: "Propaganda Movement"
+    },
+    {
+        q: "Who was the first female president of the Philippines?",
+        options: ["Corazon Aquino", "Gloria Macapagal Arroyo", "Imelda Marcos"],
+        answer: "Corazon Aquino"
+    },
+    {
+        q: "What is the term for Filipino warriors who resisted Spanish rule in the mountains?",
+        options: ["Katipuneros", "Pulahanes", "Moros"],
+        answer: "Pulahanes"
+    },
+    {
+        q: "Which document proclaimed Philippine independence from Spain on June 12, 1898?",
+        options: ["Act of the Declaration of Independence", "Malolos Constitution", "Jones Law"],
+        answer: "Act of the Declaration of Independence"
+    },
+    {
+        q: "Where did the Malolos Congress convene to draft the first Philippine Constitution?",
+        options: ["Barasoain Church", "San Agustin Church", "Quiapo Church"],
+        answer: "Barasoain Church"
+    },
+    {
+        q: "Which Philippine hero is called the 'Great Plebeian'?",
+        options: ["Andres Bonifacio", "Emilio Jacinto", "Gregorio del Pilar"],
+        answer: "Andres Bonifacio"
+    }
+];
 
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
 
-    const rect = gameArea.getBoundingClientRect();
-    const w = Math.max(44, Math.min(72, Math.floor(rect.width * 0.12)));
-    heart.style.width = `${w}px`;
-    heart.style.height = `${Math.floor(w * 0.8)}px`;
-    const x = rand(8, rect.width - w - 8);
-    heart.style.left = x + 'px';
-    heart.style.top = '-60px';
-    heart.style.position = 'absolute';
-    heart.style.transition = 'top 1.2s cubic-bezier(.4,1.6,.6,1), transform 0.2s';
-    heart.style.zIndex = 2;
+function showPanel(panel) {
+    [quizIntro, quizContainer, quizResult].forEach(p => {
+        if (!p) return;
+        p.classList.add('hidden');
+        p.classList.remove('quiz-panel-active');
+    });
+    panel.classList.remove('hidden');
+    panel.classList.add('quiz-panel-active');
+}
 
+function animateQuizTransition() {
+    try {
+        confetti({ particleCount: 12, spread: 50, origin: { y: 0.4 } });
+    } catch (e) { }
 
-    for (let i = 0; i < 3; i++) {
-        const sparkle = document.createElement('div');
-        sparkle.className = 'heart-sparkle';
-        sparkle.style.left = (x + rand(-8, w + 8)) + 'px';
-        sparkle.style.top = rand(-30, 10) + 'px';
-        sparkle.style.animationDuration = (0.7 + Math.random() * 0.7) + 's';
-        gameArea.appendChild(sparkle);
-        setTimeout(() => sparkle.remove(), 1200);
+    const pulse = document.createElement('div');
+    pulse.className = 'quiz-pulse-ring';
+    gameArea.appendChild(pulse);
+    setTimeout(() => pulse.remove(), 600);
+}
+
+function renderQuestion() {
+    if (currentQuestionIndex >= QUESTIONS.length) {
+        endGame();
+        return;
     }
 
-    setTimeout(() => {
-        heart.style.top = rand(40, rect.height - Math.floor(w * 0.8) - 8) + 'px';
-        heart.style.transform = `rotate(${rand(-18, 18)}deg)`;
-    }, 30);
+    const qData = QUESTIONS[currentQuestionIndex];
+    quizQuestionEl.textContent = qData.q;
 
-    heart.addEventListener('click', (e) => {
-        e.stopPropagation();
-        score += 1;
-        scoreEl.textContent = score;
-        heart.style.transform = 'scale(1.4) rotate(-10deg)';
-        heart.style.opacity = '0';
+    quizOptionsEl.innerHTML = '';
+    const shuffled = shuffle([...qData.options]);
 
-        for (let i = 0; i < 8; i++) {
-            const sparkle = document.createElement('div');
-            sparkle.className = 'heart-sparkle';
-            sparkle.style.left = (x + rand(-8, w + 8)) + 'px';
-            sparkle.style.top = (parseInt(heart.style.top) + rand(-8, 8)) + 'px';
-            sparkle.style.animationDuration = (0.5 + Math.random() * 0.5) + 's';
-            gameArea.appendChild(sparkle);
-            setTimeout(() => sparkle.remove(), 900);
-        }
-        try { confetti({ particleCount: 18, spread: 60, origin: { x: (x + 20) / rect.width, y: 0.3 } }); } catch (err) { }
-        setTimeout(() => heart.remove(), 300);
+    shuffled.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option-btn glow-btn';
+        btn.textContent = opt;
+        btn.addEventListener('click', () => handleAnswer(opt));
+        quizOptionsEl.appendChild(btn);
     });
 
-    gameArea.appendChild(heart);
-
-
-    setTimeout(() => {
-        if (heart.parentNode) {
-            heart.classList.add('missed-heart');
-            setTimeout(() => { if (heart.parentNode) heart.remove(); }, 400);
-        }
-    }, 2000 + rand(0, 1000));
+    animateQuizTransition();
 }
 
-function animateBgHearts() {
-    for (let i = 0; i < 10; i++) {
-        const bg = document.createElement('div');
-        bg.className = 'bg-anim-heart';
-        bg.innerHTML = '<svg width="32" height="28" viewBox="0 0 96 86" xmlns="http://www.w3.org/2000/svg"><path d="M48 78s-36-24.6-36-46.8C12 18.6 28.8 6 48 24.6 67.2 6 84 18.6 84 31.2c0 22.2-36 46.8-36 46.8z" fill="#ffb3c1" stroke="#ff1744" stroke-width="2"/></svg>';
-        bg.style.position = 'absolute';
-        bg.style.left = rand(0, 90) + '%';
-        bg.style.top = rand(0, 80) + '%';
-        bg.style.opacity = Math.random() * 0.3 + 0.2;
-        bg.style.pointerEvents = 'none';
-        bg.style.zIndex = 0;
-        bg.style.animation = `floatBgHeart ${rand(7, 14)}s linear infinite`;
-        gameArea.appendChild(bg);
+function handleAnswer(selected) {
+    const qData = QUESTIONS[currentQuestionIndex];
+    const normalizedSel = selected.toLowerCase();
+    const normalizedAns = qData.answer.toLowerCase();
+
+    if (normalizedSel === normalizedAns) {
+        score += 1;
+        scoreEl.textContent = score;
+        try {
+            confetti({ particleCount: 20, spread: 70, origin: { y: 0.7 } });
+        } catch (e) { }
+        gameArea.classList.add('quiz-correct-flash');
+        setTimeout(() => gameArea.classList.remove('quiz-correct-flash'), 300);
+    } else {
+        gameArea.classList.add('quiz-wrong-shake');
+        setTimeout(() => gameArea.classList.remove('quiz-wrong-shake'), 400);
     }
-}
 
-animateBgHearts();
+    currentQuestionIndex += 1;
+    setTimeout(renderQuestion, 250);
+}
 
 function startGame() {
-    if (timerInterval) return;
-    score = 0; scoreEl.textContent = 0;
-    timeLeft = 20; timeEl.textContent = timeLeft;
-    spawnInterval = setInterval(spawnHeart, 600);
+    if (!timeEl || timerInterval) return;
+
+    score = 0;
+    scoreEl.textContent = '0';
+    timeLeft = 60;
+    timeEl.textContent = timeLeft;
+    currentQuestionIndex = 0;
+
+    showPanel(quizContainer);
+
     timerInterval = setInterval(() => {
-        timeLeft -= 1; timeEl.textContent = timeLeft;
-        if (timeLeft <= 0) endGame();
+        timeLeft -= 1;
+        if (timeLeft < 0) timeLeft = 0;
+        timeEl.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            endGame();
+        }
     }, 1000);
-    startBtn.textContent = 'In Progress...';
-    startBtn.disabled = true;
+
+    if (startBtn) {
+        startBtn.textContent = 'Quiz Running...';
+        startBtn.disabled = true;
+    }
+
+    renderQuestion();
 }
 
 function endGame() {
-    clearInterval(spawnInterval); spawnInterval = null;
-    clearInterval(timerInterval); timerInterval = null;
-    startBtn.textContent = 'Start'; startBtn.disabled = false;
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
 
-    const overlay = document.createElement('div'); overlay.className = 'game-overlay';
-    const modal = document.createElement('div'); modal.className = 'game-modal';
+    const maxScore = QUESTIONS.length;
+    const passingScore = 7;
+    const passed = score >= passingScore;
 
-    modal.innerHTML = win
-        ? `<h3 class="pixel-text">You Win!</h3><p>Your score: <strong>${score}</strong></p><div id="teddy-bear"></div><div style="margin-top:10px;"><button id='retry' class='glow-btn'>Play Again</button> <a class='glow-btn' href='index.html'>Back</a></div>`
-        : `<h3 class="pixel-text">Time!</h3><p>Your score: <strong>${score}</strong></p><div style="margin-top:10px;"><button id='retry' class='glow-btn'>Play Again</button> <a class='glow-btn' href='index.html'>Back</a></div>`;
-    overlay.appendChild(modal);
-    document.body.appendChild(overlay);
-    document.getElementById('retry').addEventListener('click', () => { overlay.remove(); startGame(); });
+    let title;
+    let msg;
+    if (passed) {
+        title = 'You passed!';
+        msg = `Great job, prof-to-be! You scored ${score}/${maxScore}.`;
+    } else {
+        title = 'Let\'s review together';
+        msg = `You scored ${score}/${maxScore}. Passing is ${passingScore}. I\'ll study with you 💗`;
+    }
+    quizResultTitle.textContent = title;
+    quizResultMessage.textContent = msg;
 
-    if (win) showTeddyBear();
+    if (teddyBearContainer) {
+        if (passed) {
+            showTeddyBear();
+        } else {
+            teddyBearContainer.innerHTML = '';
+        }
+    }
+
+    showPanel(quizResult);
+
+    if (startBtn) {
+        startBtn.textContent = 'Start Quiz';
+        startBtn.disabled = false;
+    }
+}
+
+if (startBtn) {
+    startBtn.addEventListener('click', startGame);
+}
+
+if (retryBtn) {
+    retryBtn.addEventListener('click', () => {
+        score = 0;
+        scoreEl.textContent = '0';
+        timeLeft = 60;
+        timeEl.textContent = timeLeft;
+        currentQuestionIndex = 0;
+        showPanel(quizContainer);
+        if (!timerInterval) {
+            timerInterval = setInterval(() => {
+                timeLeft -= 1;
+                if (timeLeft < 0) timeLeft = 0;
+                timeEl.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+        if (startBtn) {
+            startBtn.textContent = 'Quiz Running...';
+            startBtn.disabled = true;
+        }
+        renderQuestion();
+    });
 }
 
 function showTeddyBear() {
-    const bearDiv = document.getElementById('teddy-bear');
-    if (!bearDiv) return;
-    bearDiv.innerHTML = `
+    if (!teddyBearContainer) return;
+    teddyBearContainer.innerHTML = `
         <div class="teddy-bear-anim">
             <svg viewBox="0 0 120 120" width="120" height="120">
                 <ellipse cx="60" cy="90" rx="32" ry="18" fill="#a67c52"/>
@@ -154,16 +288,14 @@ function showTeddyBear() {
                 <ellipse cx="30" cy="38" rx="5" ry="5" fill="#fff"/>
                 <ellipse cx="90" cy="38" rx="5" ry="5" fill="#fff"/>
             </svg>
-            <div class="bear-msg">You caught enough hearts!<br>Here's a teddy bear for you 🧸</div>
+            <div class="bear-msg">You passed the history quiz!<br>Here\'s your teddy bear 🧸</div>
         </div>
-        `;
+    `;
 }
 
-startBtn.addEventListener('click', startGame);
-
-gameArea.addEventListener('click', () => { });
-
 window.addEventListener('blur', () => {
-    const existing = gameArea.querySelectorAll('.game-heart');
-    existing.forEach(h => h.remove());
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
 });

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Catch the Heart — Mini Game</title>
+    <title>Love Quiz — Mini Game</title>
     <link rel="stylesheet" href="style.css?v=18">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
@@ -13,15 +13,39 @@
     <div class="game-root">
         <div class="game-card">
             <div class="game-header">
-                <h2 class="pixel-text">Catch the Heart</h2>
+                <div>
+                    <h2 class="pixel-text">Love Quiz</h2>
+                    <p class="quiz-subtitle">Answer fast before the time runs out!</p>
+                </div>
                 <div class="game-stats">
                     <div class="score-bubble">Score: <span id="score">0</span></div>
-                    <div class="timer-bubble">Time: <span id="time">20</span>s</div>
+                    <div class="timer-bubble">Time: <span id="time">60</span>s</div>
                 </div>
             </div>
-            <div id="game-area" class="game-area"></div>
+
+            <div id="game-area" class="game-area quiz-area">
+                <div id="quiz-intro" class="quiz-panel quiz-panel-active">
+                    <h3 class="pixel-text">Ready for a little trivia?</h3>
+                    <p class="quiz-helper">You have 60 seconds to answer 15 questions about Philippine history.
+                        Get at least 7 correct to win a cute teddy bear.
+                    </p>
+                    <button id="start-btn" class="glow-btn">Start Quiz</button>
+                </div>
+
+                <div id="quiz-container" class="quiz-panel hidden">
+                    <div class="quiz-question pixel-text" id="quiz-question"></div>
+                    <div class="quiz-options" id="quiz-options"></div>
+                </div>
+
+                <div id="quiz-result" class="quiz-panel hidden">
+                    <h3 class="pixel-text" id="quiz-result-title"></h3>
+                    <p id="quiz-result-message"></p>
+                    <div id="teddy-bear"></div>
+                    <button id="retry-btn" class="glow-btn">Play Again</button>
+                </div>
+            </div>
+
             <div class="game-controls">
-                <button id="start-btn" class="glow-btn">Start</button>
                 <a class="glow-btn" href="index.html">Back</a>
             </div>
         </div>
