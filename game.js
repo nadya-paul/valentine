@@ -19,6 +19,107 @@ let currentQuestionIndex = 0;
 
 function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
+// Initialize Background Animations
+function initGameBackground() {
+    const heartsContainer = document.getElementById('game-bg-hearts');
+    const sparklesContainer = document.getElementById('game-bg-sparkles');
+    
+    // Create floating hearts
+    if (heartsContainer) {
+        for (let i = 0; i < 15; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'game-floating-heart';
+            heart.innerHTML = ['❤️', '💕', '💖', '💝', '💗'][Math.floor(Math.random() * 5)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+            heart.style.animationDelay = (Math.random() * 15) + 's';
+            heart.style.setProperty('--sway', (Math.random() * 100 - 50) + 'px');
+            heartsContainer.appendChild(heart);
+        }
+        
+        // Add new hearts periodically
+        setInterval(() => {
+            if (heartsContainer.children.length < 20) {
+                const heart = document.createElement('div');
+                heart.className = 'game-floating-heart';
+                heart.innerHTML = ['❤️', '💕', '💖', '💝', '💗'][Math.floor(Math.random() * 5)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+                heart.style.animationDelay = '0s';
+                heart.style.setProperty('--sway', (Math.random() * 100 - 50) + 'px');
+                heartsContainer.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 15000);
+            }
+        }, 5000);
+    }
+    
+    // Create sparkles
+    if (sparklesContainer) {
+        setInterval(() => {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'game-sparkle';
+            sparkle.innerHTML = '✨';
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.top = Math.random() * 100 + '%';
+            sparkle.style.animationDelay = (Math.random() * 2) + 's';
+            sparklesContainer.appendChild(sparkle);
+            
+            setTimeout(() => sparkle.remove(), 3000);
+        }, 800);
+    }
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', initGameBackground);
+
+// Sound Effects
+function playCorrectSound() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.setValueAtTime(523, audioContext.currentTime);
+    oscillator.frequency.setValueAtTime(659, audioContext.currentTime + 0.1);
+    oscillator.frequency.setValueAtTime(784, audioContext.currentTime + 0.2);
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.3);
+}
+
+function playWrongSound() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.2);
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.2);
+}
+
+function playClickSound() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.05);
+    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.1);
+}
+
 const QUESTIONS = [
     {
         q: "Who is known as the national hero of the Philippines?",
@@ -142,7 +243,10 @@ function renderQuestion() {
         const btn = document.createElement('button');
         btn.className = 'quiz-option-btn glow-btn';
         btn.textContent = opt;
-        btn.addEventListener('click', () => handleAnswer(opt));
+        btn.addEventListener('click', () => {
+            playClickSound();
+            handleAnswer(opt);
+        });
         quizOptionsEl.appendChild(btn);
     });
 
@@ -157,12 +261,36 @@ function handleAnswer(selected) {
     if (normalizedSel === normalizedAns) {
         score += 1;
         scoreEl.textContent = score;
+        playCorrectSound();
         try {
-            confetti({ particleCount: 20, spread: 70, origin: { y: 0.7 } });
+            // Multiple confetti bursts for correct answer
+            confetti({ 
+                particleCount: 30, 
+                spread: 70, 
+                origin: { y: 0.7 },
+                colors: ['#ff1744', '#ff4d6d', '#ff8fa3', '#ffb3c1', '#ffe5ec']
+            });
+            setTimeout(() => {
+                confetti({ 
+                    particleCount: 20, 
+                    spread: 50, 
+                    origin: { x: 0.3, y: 0.6 },
+                    colors: ['#ff1744', '#ff4d6d', '#ff8fa3']
+                });
+            }, 100);
+            setTimeout(() => {
+                confetti({ 
+                    particleCount: 20, 
+                    spread: 50, 
+                    origin: { x: 0.7, y: 0.6 },
+                    colors: ['#ff1744', '#ff4d6d', '#ff8fa3']
+                });
+            }, 200);
         } catch (e) { }
         gameArea.classList.add('quiz-correct-flash');
         setTimeout(() => gameArea.classList.remove('quiz-correct-flash'), 300);
     } else {
+        playWrongSound();
         gameArea.classList.add('quiz-wrong-shake');
         setTimeout(() => gameArea.classList.remove('quiz-wrong-shake'), 400);
     }
@@ -214,6 +342,33 @@ function endGame() {
     if (passed) {
         title = 'You passed!';
         msg = `Great job, prof-to-be! You scored ${score}/${maxScore}.`;
+        // Victory celebration with confetti
+        playCorrectSound();
+        setTimeout(() => {
+            try {
+                const duration = 3000;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 3,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0, y: 0.7 },
+                        colors: ['#ff1744', '#ff4d6d', '#ff8fa3', '#ffb3c1']
+                    });
+                    confetti({
+                        particleCount: 3,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1, y: 0.7 },
+                        colors: ['#ff1744', '#ff4d6d', '#ff8fa3', '#ffb3c1']
+                    });
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                })();
+            } catch (e) { }
+        }, 200);
     } else {
         title = 'Let\'s review together';
         msg = `You scored ${score}/${maxScore}. Passing is ${passingScore}. I\'ll study with you 💗`;
@@ -238,11 +393,15 @@ function endGame() {
 }
 
 if (startBtn) {
-    startBtn.addEventListener('click', startGame);
+    startBtn.addEventListener('click', () => {
+        playClickSound();
+        startGame();
+    });
 }
 
 if (retryBtn) {
     retryBtn.addEventListener('click', () => {
+        playClickSound();
         score = 0;
         scoreEl.textContent = '0';
         timeLeft = 60;

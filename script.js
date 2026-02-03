@@ -10,6 +10,64 @@ function updateKittyWaveVisibility(stepId) {
     }
 }
 
+// Sound Effects System
+function playClickSound() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.05);
+    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.1);
+}
+
+function playSuccessSound() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.setValueAtTime(523, audioContext.currentTime);
+    oscillator.frequency.setValueAtTime(659, audioContext.currentTime + 0.1);
+    oscillator.frequency.setValueAtTime(784, audioContext.currentTime + 0.2);
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.3);
+}
+
+function playErrorSound() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.2);
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.2);
+}
+
+// Add click sound to all buttons
+function addButtonSounds() {
+    document.querySelectorAll('button, .glow-btn, .music-btn, .arrow-btn, .flower-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            if (!this.disabled) {
+                playClickSound();
+            }
+        });
+    });
+}
+
 let currentStep = 0;
 
 function showStep(stepId) {
@@ -90,6 +148,49 @@ function typeWriterLines(lines, container, cb) {
 
 window.addEventListener('DOMContentLoaded', function () {
     updateKittyWaveVisibility('step-typing');
+    
+    // Initialize volume control
+    const volumeSlider = document.getElementById('volume-slider');
+    const volumePercentage = document.getElementById('volume-percentage');
+    const volumeIcon = document.getElementById('volume-icon');
+    const bgMusic = document.getElementById('bg-music');
+    
+    if (volumeSlider && bgMusic) {
+        volumeSlider.addEventListener('input', function() {
+            const volume = this.value / 100;
+            bgMusic.volume = volume;
+            volumePercentage.textContent = this.value + '%';
+            
+            // Update icon based on volume
+            if (volume === 0) {
+                volumeIcon.textContent = '🔇';
+            } else if (volume < 0.5) {
+                volumeIcon.textContent = '🔉';
+            } else {
+                volumeIcon.textContent = '🔊';
+            }
+        });
+        
+        // Toggle mute on icon click
+        volumeIcon.addEventListener('click', function() {
+            if (bgMusic.volume > 0) {
+                bgMusic.dataset.previousVolume = bgMusic.volume;
+                bgMusic.volume = 0;
+                volumeSlider.value = 0;
+                volumePercentage.textContent = '0%';
+                volumeIcon.textContent = '🔇';
+            } else {
+                const prevVolume = parseFloat(bgMusic.dataset.previousVolume) || 0.7;
+                bgMusic.volume = prevVolume;
+                volumeSlider.value = prevVolume * 100;
+                volumePercentage.textContent = Math.round(prevVolume * 100) + '%';
+                volumeIcon.textContent = prevVolume < 0.5 ? '🔉' : '🔊';
+            }
+        });
+    }
+    
+    // Add sound effects to all buttons
+    addButtonSounds();
 
     const typingStep = document.getElementById('step-typing');
     if (typingStep && typingStep.classList.contains('active')) {
@@ -353,7 +454,7 @@ document.getElementById('heart-trigger').onclick = function () {
 function handleEnvelope(el) {
     if (el.classList.contains('open')) return;
 
-    playPixelSound('beep');
+    playSuccessSound();
     el.classList.add('open');
 
 
@@ -361,7 +462,7 @@ function handleEnvelope(el) {
 
 
     if (openCount >= 4) {
-        playPixelSound('success');
+        playSuccessSound();
         setTimeout(() => {
             const btn = document.getElementById('nav-to-pw');
             btn.classList.remove('hidden');
@@ -375,7 +476,7 @@ function handleEnvelope(el) {
 function verifyAccess() {
     const input = document.getElementById('pw-field').value.toUpperCase().trim();
     if (input === PASSWORD) {
-        playPixelSound('success');
+        playSuccessSound();
         nextStep();
     } else {
         playPixelSound('error');
@@ -400,10 +501,10 @@ function checkTrivia() {
 
     const allCorrect = f === TRIVIA.food && c === TRIVIA.color && d === TRIVIA.dog;
     if (allCorrect) {
-        playPixelSound('success');
+        playSuccessSound();
         nextStep();
     } else {
-        playPixelSound('error');
+        playErrorSound();
         const hints = [];
         if (f !== TRIVIA.food) hints.push('Food ✗');
         if (c !== TRIVIA.color) hints.push('Color ✗');

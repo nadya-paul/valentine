@@ -1,33 +1,55 @@
 <div class="hello-kitty-wave-bg">
     <svg class="hello-kitty-wave-svg" viewBox="0 0 200 220" width="200" height="220">
-
+        <!-- Head -->
         <ellipse cx="100" cy="90" rx="80" ry="70" fill="#fff" stroke="#222" stroke-width="4" />
 
-        <ellipse cx="40" cy="30" rx="22" ry="16" fill="#fff" stroke="#222" stroke-width="4" />
+        <!-- Left Ear -->
+        <ellipse cx="40" cy="30" rx="25" ry="20" fill="#fff" stroke="#222" stroke-width="4" />
+        <ellipse cx="40" cy="35" rx="15" ry="12" fill="#ffb3c1" />
 
-        <ellipse cx="160" cy="30" rx="22" ry="16" fill="#fff" stroke="#222" stroke-width="4" />
+        <!-- Right Ear -->
+        <ellipse cx="160" cy="30" rx="25" ry="20" fill="#fff" stroke="#222" stroke-width="4" />
+        <ellipse cx="160" cy="35" rx="15" ry="12" fill="#ffb3c1" />
 
-        <ellipse cx="70" cy="90" rx="12" ry="18" fill="#222" />
-        <ellipse cx="130" cy="90" rx="12" ry="18" fill="#222" />
-        <ellipse cx="100" cy="120" rx="16" ry="8" fill="#f9b" />
-        <ellipse cx="100" cy="110" rx="7" ry="7" fill="#ffb300" />
+        <!-- Eyes -->
+        <ellipse cx="70" cy="85" rx="13" ry="20" fill="#222" />
+        <ellipse cx="70" cy="78" rx="5" ry="7" fill="#fff" />
+        <ellipse cx="130" cy="85" rx="13" ry="20" fill="#222" />
+        <ellipse cx="130" cy="78" rx="5" ry="7" fill="#fff" />
 
-        <rect x="10" y="100" width="30" height="3" rx="2" fill="#222" />
-        <rect x="10" y="110" width="30" height="3" rx="2" fill="#222" />
-        <rect x="160" y="100" width="30" height="3" rx="2" fill="#222" />
-        <rect x="160" y="110" width="30" height="3" rx="2" fill="#222" />
+        <!-- Nose -->
+        <ellipse cx="100" cy="110" rx="8" ry="8" fill="#ffb300" />
 
-        <ellipse cx="155" cy="45" rx="16" ry="10" fill="#ff1744" stroke="#222" stroke-width="2" />
-        <ellipse cx="175" cy="45" rx="8" ry="8" fill="#ffb3c1" stroke="#222" stroke-width="2" />
-        <ellipse cx="165" cy="35" rx="7" ry="7" fill="#ffb3c1" stroke="#222" stroke-width="2" />
+        <!-- Mouth -->
+        <ellipse cx="100" cy="120" rx="18" ry="9" fill="#f9b" />
 
-        <ellipse cx="100" cy="190" rx="55" ry="30" fill="#fff" stroke="#222" stroke-width="4" />
+        <!-- Whiskers Left -->
+        <line x1="20" y1="100" x2="55" y2="98" stroke="#222" stroke-width="3" stroke-linecap="round" />
+        <line x1="20" y1="110" x2="55" y2="108" stroke="#222" stroke-width="3" stroke-linecap="round" />
+        <line x1="20" y1="120" x2="55" y2="118" stroke="#222" stroke-width="3" stroke-linecap="round" />
 
-        <ellipse cx="40" cy="170" rx="18" ry="10" fill="#fff" stroke="#222" stroke-width="4" />
+        <!-- Whiskers Right -->
+        <line x1="180" y1="100" x2="145" y2="98" stroke="#222" stroke-width="3" stroke-linecap="round" />
+        <line x1="180" y1="110" x2="145" y2="108" stroke="#222" stroke-width="3" stroke-linecap="round" />
+        <line x1="180" y1="120" x2="145" y2="118" stroke="#222" stroke-width="3" stroke-linecap="round" />
 
+        <!-- Bow -->
+        <ellipse cx="155" cy="45" rx="20" ry="12" fill="#ff1744" stroke="#222" stroke-width="2" />
+        <ellipse cx="175" cy="45" rx="10" ry="10" fill="#ff1744" stroke="#222" stroke-width="2" />
+        <ellipse cx="165" cy="35" rx="8" ry="8" fill="#ffb3c1" stroke="#222" stroke-width="2" />
+        <circle cx="165" cy="45" r="5" fill="#fff" opacity="0.6" />
+
+        <!-- Body -->
+        <ellipse cx="100" cy="190" rx="60" ry="32" fill="#fff" stroke="#222" stroke-width="4" />
+
+        <!-- Left Arm -->
+        <ellipse cx="40" cy="170" rx="20" ry="12" fill="#fff" stroke="#222" stroke-width="4" />
+        <ellipse cx="32" cy="170" rx="8" ry="8" fill="#fff" stroke="#222" stroke-width="3" />
+
+        <!-- Right Arm (waving) -->
         <g class="kitty-wave-arm">
-            <ellipse cx="170" cy="150" rx="18" ry="10" fill="#fff" stroke="#222" stroke-width="4" />
-            <ellipse cx="185" cy="150" rx="8" ry="8" fill="#fff" stroke="#222" stroke-width="3" />
+            <ellipse cx="170" cy="150" rx="20" ry="12" fill="#fff" stroke="#222" stroke-width="4" />
+            <ellipse cx="188" cy="150" rx="10" ry="10" fill="#fff" stroke="#222" stroke-width="3" />
         </g>
     </svg>
 </div>
@@ -47,6 +69,15 @@
     <audio id="bg-music" loop>
         <source src="https://assets.mixkit.co/music/preview/mixkit-romantic-piano-intro-2525.mp3" type="audio/mp3">
     </audio>
+
+    <!-- Volume Control -->
+    <div class="volume-control" id="volume-control">
+        <button class="volume-icon" id="volume-icon" title="Volume Control">🔊</button>
+        <div class="volume-slider-container" id="volume-slider-container">
+            <input type="range" min="0" max="100" value="70" class="volume-slider" id="volume-slider">
+            <span class="volume-percentage" id="volume-percentage">70%</span>
+        </div>
+    </div>
 
     <div class="pixel-bg"></div>
     <div class="hello-kitty-bg">
@@ -84,9 +115,9 @@
         </section>
 
         <section id="step-typing" class="step hidden">
-            <h2 class="pixel-text" style="margin-bottom: 0;">Hi Love!</h2>
+            <h2 class="pixel-text" style="margin-bottom: 30px;">Hi Love!</h2>
             <div id="typewriter-messages"></div>
-            <button id="typing-continue" class="glow-btn hidden" style="margin-top:18px;">yes!</button>
+            <button id="typing-continue" class="glow-btn hidden" style="margin-top:30px;">yes!</button>
         </section>
         <section id="step0" class="step hidden">
             <div class="pixel-card expanded">
